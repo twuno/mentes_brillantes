@@ -1,13 +1,14 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mentes_brillantes/common.dart';
 import 'package:audio_session/audio_session.dart';
-
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:webfeed/domain/rss_item.dart';
-
+import 'package:mentes_brillantes/page_manager.dart';
 
 /*class Reproductor extends StatelessWidget {
   const Reproductor(RssItem this.episodio ) ;
@@ -70,6 +71,7 @@ class Reproductor extends StatefulWidget {
 class _ReproductorState extends State<Reproductor> with WidgetsBindingObserver{
   final _player = AudioPlayer();
 
+
   @override
   void initState(){
     super.initState();
@@ -79,7 +81,9 @@ class _ReproductorState extends State<Reproductor> with WidgetsBindingObserver{
     ));
     _init();
   }
+
   Future<void> _init() async {
+
     // Inform the operating system of our app's audio attributes etc.
     // We pick a reasonable default for an app that plays speech.
     final session = await AudioSession.instance;
@@ -93,17 +97,23 @@ class _ReproductorState extends State<Reproductor> with WidgetsBindingObserver{
     try {
       // AAC example: https://dl.espressif.com/dl/audio/ff-16b-2c-44100hz.aac
       await _player.setAudioSource(AudioSource.uri(Uri.parse(
-          widget.Episodio.enclosure.url)));
+          widget.Episodio.enclosure.url)
+      ,tag: MediaItem(id: '1', title: widget.Episodio.title, artist: 'Mentes Brillantes')
+      ),
+
+      );
     } catch (e) {
       print("Error loading audio source: $e");
     }
   }
+
   @override
   void dispose() {
     ambiguate(WidgetsBinding.instance)!.removeObserver(this);
     // Release decoders and buffers back to the operating system making them
     // available for other apps to use.
     _player.dispose();
+
     super.dispose();
   }
 

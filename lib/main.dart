@@ -1,9 +1,21 @@
 // @dart=2.9
 import 'package:flutter/material.dart';
+import 'package:just_audio_background/just_audio_background.dart';
+import 'package:mentes_brillantes/services/service_locator.dart';
 
 import 'rss_reader.dart';
 
-void main() => runApp(RssApp());
+/*Future<void> main()  async => runApp(
+     RssApp());*/
+
+Future<void> main() async {
+  await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+    androidNotificationChannelName: 'Audio playback',
+    androidNotificationOngoing: true,
+  );
+  runApp(RssApp());
+}
 
 class RssApp extends StatelessWidget {
   @override
